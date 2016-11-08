@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// LOAD command. Load the specified scene by name.
@@ -13,9 +14,9 @@ namespace Wenzil.Console.Commands
         public static readonly string description = "Load the specified scene by name. Before you can load a scene you have to add it to the list of levels used in the game. Use File->Build Settings... in Unity and add the levels you need to the level list there.";
         public static readonly string usage = "LOAD scene";
 
-        public static string Execute(params string[] args)
+        public static ConsoleCommandResult Execute(params string[] args)
         {
-            if (args.Length == 0)
+            if(args.Length == 0)
             {
                 return HelpCommand.Execute(LoadCommand.name);
             }
@@ -25,21 +26,23 @@ namespace Wenzil.Console.Commands
             }
         }
 
-        private static string LoadLevel(string scene)
+        private static ConsoleCommandResult LoadLevel(string sceneName)
         {
             try
             {
-                Application.LoadLevel(scene);
+                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             }
             catch
             {
-                return string.Format("Failed to load {0}.", scene);
+                return ConsoleCommandResult.Failed(string.Format("Failed to load {0}.", sceneName));
             }
 
-            if (Application.loadedLevelName == scene) // Assume success if we had to load the scene we were already in
-                return string.Format("Success loading {0}.", scene);
+            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
+
+            if(scene.IsValid() && scene.isLoaded)
+                return ConsoleCommandResult.Succeeded(string.Format("Success loading {0}.", sceneName));
             else
-                return string.Format("Failed to load {0}. Are you sure it's in the list of levels in Build Settings?", scene);
+                return ConsoleCommandResult.Failed(string.Format("Failed to load {0}. Are you sure it's in the list of levels in Build Settings?", sceneName));
         }
     }
 }

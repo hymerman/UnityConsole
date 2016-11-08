@@ -1,6 +1,22 @@
 ﻿namespace Wenzil.Console 
 {
-    public delegate string ConsoleCommandCallback(params string[] args);
+    public struct ConsoleCommandResult
+    {
+        public bool succeeded;
+        public string output;
+
+        public static ConsoleCommandResult Failed(string output = null)
+        {
+            return new ConsoleCommandResult { succeeded = false, output = output };
+        }
+
+        public static ConsoleCommandResult Succeeded(string output = null)
+        {
+            return new ConsoleCommandResult { succeeded = true, output = output };
+        }
+    }
+
+    public delegate ConsoleCommandResult ConsoleCommandCallback(params string[] args);
 
     public struct ConsoleCommand 
     {

@@ -11,13 +11,13 @@ namespace Wenzil.Console.Commands
         public static readonly string description = "Quit the application.";
         public static readonly string usage = "QUIT";
 
-        public static string Execute(params string[] args)
+        public static ConsoleCommandResult Execute(params string[] args)
         {
             Application.Quit();
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
-            return "Quitting...";
+            return ConsoleCommandResult.Succeeded();
         }
     }
 }

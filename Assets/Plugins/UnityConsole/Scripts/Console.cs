@@ -20,7 +20,7 @@ namespace Wenzil.Console
                 OnConsoleLog(line);
         }
 
-        public static string ExecuteCommand(string command, params string[] args)
+        public static ConsoleCommandResult ExecuteCommand(string command, params string[] args)
         {
             return ConsoleCommandsDatabase.ExecuteCommand(command, args);
         }

@@ -17,7 +17,7 @@ public class CustomCommands : MonoBehaviour
     /// <summary>
     /// Spawn a new game object from the given name and primitve type in front of the main camera. See PrimitiveType.
     /// </summary>
-    private static string Spawn(params string[] args)
+    private static ConsoleCommandResult Spawn(params string[] args)
     {
         string name;
         PrimitiveType primitiveType;
@@ -36,20 +36,20 @@ public class CustomCommands : MonoBehaviour
             }
             catch
             {
-                return "Invalid primitive type specified: " + args[1];
+                return ConsoleCommandResult.Failed("Invalid primitive type specified: " + args[1]);
             }
 
             spawned = GameObject.CreatePrimitive(primitiveType);
             spawned.name = name;
             spawned.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 5;
-            return "Spawned a new " + primitiveType + " named " + name + ".";
+            return ConsoleCommandResult.Succeeded("Spawned a new " + primitiveType + " named " + name + ".");
         }
     }
 
     /// <summary>
     /// Destroy the specified game object by name.
     /// </summary>
-    private static string Destroy(params string[] args)
+    private static ConsoleCommandResult Destroy(params string[] args)
     {
         if (args.Length == 0)
         {
@@ -63,11 +63,11 @@ public class CustomCommands : MonoBehaviour
             if (gameobject != null)
             {
                 GameObject.Destroy(gameobject);
-                return "Destroyed game object " + name + ".";
+                return ConsoleCommandResult.Succeeded("Destroyed game object " + name + ".");
             }
             else
             {
-                return "No game object named " + name + ".";
+                return ConsoleCommandResult.Failed("No game object named " + name + ".");
             }
         }
     }

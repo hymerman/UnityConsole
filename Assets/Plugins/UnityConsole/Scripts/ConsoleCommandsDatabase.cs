@@ -26,7 +26,7 @@ namespace Wenzil.Console
             database[command] = new ConsoleCommand(command, description, usage, callback);
         }
 
-        public static string ExecuteCommand(string command, params string[] args)
+        public static ConsoleCommandResult ExecuteCommand(string command, params string[] args)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace Wenzil.Console
             }
             catch (NoSuchCommandException e)
             {
-                return e.Message;
+                return new ConsoleCommandResult { succeeded = false, output = e.Message };
             }
         }
 

@@ -18,7 +18,33 @@ namespace Wenzil.Console
         public KeyCode toggleKey = KeyCode.BackQuote;
         public bool closeOnEscape = false;
 
-        private ConsoleInputHistory inputHistory = new ConsoleInputHistory(inputHistoryCapacity); 
+        private ConsoleInputHistory inputHistory = new ConsoleInputHistory(inputHistoryCapacity);
+
+        public void ExecuteCommandDropResult( string input )
+        {
+            ExecuteCommand( input );
+        }
+
+        public ConsoleCommandResult ExecuteCommand(string input)
+        {
+            string[] parts = input.Split(' ');
+            string command = parts[0];
+            string[] args = parts.Skip(1).ToArray();
+
+            Console.Log("> " + input);
+            var result = ConsoleCommandsDatabase.ExecuteCommand(command, args);
+
+            Console.Log(result.succeeded ? "Done" : "Failed");
+
+            if(!string.IsNullOrEmpty(result.output))
+            {
+                Console.Log(result.output);
+            }
+
+            inputHistory.AddNewInputEntry(input);
+
+            return result;
+        }
 
         void Awake()
         {
@@ -29,14 +55,14 @@ namespace Wenzil.Console
         void OnEnable()
         {
             Console.OnConsoleLog += ui.AddNewOutputLine;
-            ui.onSubmitCommand += ExecuteCommand;
+            ui.onSubmitCommand += ExecuteCommandDropResult;
             ui.onClearConsole += inputHistory.Clear;
         }
 
         void OnDisable()
         {
             Console.OnConsoleLog -= ui.AddNewOutputLine;
-            ui.onSubmitCommand -= ExecuteCommand;
+            ui.onSubmitCommand -= ExecuteCommandDropResult;
             ui.onClearConsole -= inputHistory.Clear;
         }
 
@@ -56,17 +82,6 @@ namespace Wenzil.Console
         {
             string navigatedToInput = inputHistory.Navigate(up);
             ui.SetInputText(navigatedToInput);
-        }
-
-        private void ExecuteCommand(string input)
-        {
-            string[] parts = input.Split(' ');
-            string command = parts[0];
-            string[] args = parts.Skip(1).ToArray();
-        
-            Console.Log("> " + input);
-            Console.Log(ConsoleCommandsDatabase.ExecuteCommand(command, args));
-            inputHistory.AddNewInputEntry(input);
         }
     }
 }

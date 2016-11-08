@@ -16,7 +16,7 @@ namespace Wenzil.Console.Commands
 
         private static StringBuilder commandList = new StringBuilder();
 
-        public static string Execute(params string[] args)
+        public static ConsoleCommandResult Execute(params string[] args)
         {
             if (args.Length == 0)
             {
@@ -28,7 +28,7 @@ namespace Wenzil.Console.Commands
             }
         }
 
-        private static string DisplayAvailableCommands()
+        private static ConsoleCommandResult DisplayAvailableCommands()
         {
             commandList.Length = 0; // clear the command list before rebuilding it
             commandList.Append("<b>Available Commands</b>\n");
@@ -39,10 +39,10 @@ namespace Wenzil.Console.Commands
             }
 
             commandList.Append("To display details about a specific command, type 'HELP' followed by the command name.");
-            return commandList.ToString();
+            return ConsoleCommandResult.Succeeded(commandList.ToString());
         }
 
-        private static string DisplayCommandDetails(string commandName)
+        private static ConsoleCommandResult DisplayCommandDetails(string commandName)
         {
             string formatting =
 @"<b>{0} Command</b>
@@ -52,11 +52,11 @@ namespace Wenzil.Console.Commands
             try
             {
                 ConsoleCommand command = ConsoleCommandsDatabase.GetCommand(commandName);
-                return string.Format(formatting, command.name, command.description, command.usage);
+                return ConsoleCommandResult.Succeeded(string.Format(formatting, command.name, command.description, command.usage));
             }
             catch (NoSuchCommandException exception)
             {
-                return string.Format("Cannot find help information about {0}. Are you sure it is a valid command?", exception.command);
+                return ConsoleCommandResult.Failed(string.Format("Cannot find help information about {0}. Are you sure it is a valid command?", exception.command));
             }
         }
     }
