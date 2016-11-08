@@ -37,6 +37,10 @@ namespace Wenzil.Console
             {
                 return new ConsoleCommandResult { succeeded = false, output = e.Message };
             }
+            catch (Exception e)
+            {
+                return new ConsoleCommandResult { succeeded = false, output = e.Message };
+            }
         }
 
         public static bool TryGetCommand(string command, out ConsoleCommand result)
