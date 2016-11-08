@@ -37,6 +37,8 @@ namespace Wenzil.Console
         /// </summary>
         public void ToggleConsole()
         {
+            // Also clear the output whilst closing, as Unity's text boxes (oddly) submit their contents on becoming disabled.
+            ClearInput();
             enabled = !enabled;
         }
 
