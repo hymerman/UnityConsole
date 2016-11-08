@@ -1,24 +1,22 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine.SceneManagement;
 
-/// <summary>
-/// LOAD command. Load the specified scene by name.
-/// </summary>
 
 namespace UnityConsole.Commands
 {
+    /// <summary>
+    /// LoadScene command. Load the specified scene by name.
+    /// </summary>
     public static class LoadSceneCommand
     {
-        public static readonly string name = "LoadScene";
-        public static readonly string description = "Load the specified scene by name. Before you can load a scene you have to add it to the list of levels used in the game. Use File->Build Settings... in Unity and add the levels you need to the level list there.";
-        public static readonly string usage = "LoadScene scene";
+        public static readonly string Name = "LoadScene";
+        public static readonly string Description = "Load the specified scene by name. Before you can load a scene you have to add it to the list of levels used in the game. Use File->Build Settings... in Unity and add the levels you need to the level list there.";
+        public static readonly string Usage = "LoadScene scene";
 
         public static ConsoleCommandResult Execute(params string[] args)
         {
             if(args.Length == 0)
             {
-                return HelpCommand.Execute(LoadSceneCommand.name);
+                return HelpCommand.Execute(Name);
             }
             else
             {
@@ -30,14 +28,14 @@ namespace UnityConsole.Commands
         {
             try
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+                SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
             }
             catch
             {
                 return ConsoleCommandResult.Failed(string.Format("Failed to load {0}.", sceneName));
             }
 
-            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
+            var scene = SceneManager.GetSceneByName(sceneName);
 
             if(scene.IsValid() && scene.isLoaded)
                 return ConsoleCommandResult.Succeeded(string.Format("Success loading {0}.", sceneName));
@@ -48,15 +46,15 @@ namespace UnityConsole.Commands
 
     public static class LoadSceneAdditiveCommand
     {
-        public static readonly string name = "LoadSceneAdditive";
-        public static readonly string description = "Load the specified scene by name. Before you can load a scene you have to add it to the list of levels used in the game. Use File->Build Settings... in Unity and add the levels you need to the level list there.";
-        public static readonly string usage = "LoadSceneAdditive sceneName";
+        public static readonly string Name = "LoadSceneAdditive";
+        public static readonly string Description = "Load the specified scene by name. Before you can load a scene you have to add it to the list of levels used in the game. Use File->Build Settings... in Unity and add the levels you need to the level list there.";
+        public static readonly string Usage = "LoadSceneAdditive sceneName";
 
         public static ConsoleCommandResult Execute( params string[] args )
         {
             if( args.Length == 0 )
             {
-                return HelpCommand.Execute( LoadSceneAdditiveCommand.name );
+                return HelpCommand.Execute( Name );
             }
             else
             {
@@ -68,14 +66,14 @@ namespace UnityConsole.Commands
         {
             try
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene( sceneName, LoadSceneMode.Additive );
+                SceneManager.LoadScene( sceneName, LoadSceneMode.Additive );
             }
             catch
             {
                 return ConsoleCommandResult.Failed( string.Format( "Failed to load {0}.", sceneName ) );
             }
 
-            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName( sceneName );
+            var scene = SceneManager.GetSceneByName( sceneName );
 
             if( scene.IsValid() && scene.isLoaded )
                 return ConsoleCommandResult.Succeeded( string.Format( "Success loading {0}.", sceneName ) );
@@ -86,15 +84,15 @@ namespace UnityConsole.Commands
 
     public static class UnloadSceneCommand
     {
-        public static readonly string name = "UnloadScene";
-        public static readonly string description = "Unloads the named scene";
-        public static readonly string usage = "UnloadScene sceneName";
+        public static readonly string Name = "UnloadScene";
+        public static readonly string Description = "Unloads the named scene";
+        public static readonly string Usage = "UnloadScene sceneName";
 
         public static ConsoleCommandResult Execute( params string[] args )
         {
             if( args.Length == 0 )
             {
-                return HelpCommand.Execute( LoadSceneAdditiveCommand.name );
+                return HelpCommand.Execute( LoadSceneAdditiveCommand.Name );
             }
             else
             {
@@ -106,14 +104,14 @@ namespace UnityConsole.Commands
         {
             try
             {
-                UnityEngine.SceneManagement.SceneManager.UnloadScene( sceneName );
+                SceneManager.UnloadScene( sceneName );
             }
             catch
             {
                 return ConsoleCommandResult.Failed( string.Format( "Failed to load {0}.", sceneName ) );
             }
 
-            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName( sceneName );
+            var scene = SceneManager.GetSceneByName( sceneName );
 
             if( scene.IsValid() && !scene.isLoaded )
                 return ConsoleCommandResult.Succeeded( string.Format( "Success unloading {0}.", sceneName ) );
@@ -124,15 +122,15 @@ namespace UnityConsole.Commands
 
     public static class SetActiveSceneCommand
     {
-        public static readonly string name = "SetActiveScene";
-        public static readonly string description = "Sets the named scene as the active scene";
-        public static readonly string usage = "SetActiveScene sceneName";
+        public static readonly string Name = "SetActiveScene";
+        public static readonly string Description = "Sets the named scene as the active scene";
+        public static readonly string Usage = "SetActiveScene sceneName";
 
         public static ConsoleCommandResult Execute( params string[] args )
         {
             if( args.Length == 0 )
             {
-                return HelpCommand.Execute( SetActiveSceneCommand.name );
+                return HelpCommand.Execute( Name );
             }
             else
             {
@@ -142,18 +140,18 @@ namespace UnityConsole.Commands
 
         private static ConsoleCommandResult SetActiveScene( string sceneName )
         {
-            var scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName( sceneName );
+            var scene = SceneManager.GetSceneByName( sceneName );
 
             try
             {
-                UnityEngine.SceneManagement.SceneManager.SetActiveScene( scene );
+                SceneManager.SetActiveScene( scene );
             }
             catch
             {
                 return ConsoleCommandResult.Failed( string.Format( "Failed to set {0} as active.", sceneName ) );
             }
 
-            if( scene.IsValid() && UnityEngine.SceneManagement.SceneManager.GetActiveScene() == scene )
+            if( scene.IsValid() && SceneManager.GetActiveScene() == scene )
                 return ConsoleCommandResult.Succeeded( string.Format( "Success setting {0} as active.", sceneName ) );
             else
                 return ConsoleCommandResult.Failed( string.Format( "Failed to set {0} as active. Are you sure it's in the list of levels in Build Settings?", sceneName ) );

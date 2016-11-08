@@ -26,7 +26,7 @@ namespace UnityConsole
         }
     }
 
-    public static class MBExtensions {
+    public static class MbExtensions {
         #region Typesafe Invoke
         public static void Invoke(this MonoBehaviour mb, Action action, float delay) {
             if(delay == 0f)

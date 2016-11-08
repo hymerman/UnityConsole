@@ -3,16 +3,16 @@
     public struct ConsoleCommandResult
     {
         public bool succeeded;
-        public string output;
+        public string Output;
 
         public static ConsoleCommandResult Failed(string output = null)
         {
-            return new ConsoleCommandResult { succeeded = false, output = output };
+            return new ConsoleCommandResult { succeeded = false, Output = output };
         }
 
         public static ConsoleCommandResult Succeeded(string output = null)
         {
-            return new ConsoleCommandResult { succeeded = true, output = output };
+            return new ConsoleCommandResult { succeeded = true, Output = output };
         }
     }
 
@@ -20,17 +20,17 @@
 
     public struct ConsoleCommand 
     {
-        public string name { get; private set; }
-        public string description { get; private set; }
-        public string usage { get; private set; }
-        public ConsoleCommandCallback callback { get; private set; }
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public string Usage { get; private set; }
+        public ConsoleCommandCallback Callback { get; private set; }
 
         public ConsoleCommand(string name, string description, string usage, ConsoleCommandCallback callback) : this()
         {
-            this.name = name;
-            this.description = (string.IsNullOrEmpty(description.Trim()) ? "No description provided" : description);
-            this.usage = (string.IsNullOrEmpty(usage.Trim()) ? "No usage information provided" : usage);
-            this.callback = callback;
+            Name = name;
+            Description = (string.IsNullOrEmpty(description.Trim()) ? "No description provided" : description);
+            Usage = (string.IsNullOrEmpty(usage.Trim()) ? "No usage information provided" : usage);
+            Callback = callback;
         }
     }
 }

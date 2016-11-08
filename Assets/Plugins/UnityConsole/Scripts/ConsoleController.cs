@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using System;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace UnityConsole
 {
@@ -12,13 +10,13 @@ namespace UnityConsole
     [RequireComponent(typeof(ConsoleController))]
     public class ConsoleController : MonoBehaviour
     {
-        private const int inputHistoryCapacity = 20;
+        private const int InputHistoryCapacity = 20;
  
-        public ConsoleUI ui;
-        public KeyCode toggleKey = KeyCode.BackQuote;
-        public bool closeOnEscape = false;
+        public ConsoleUI UI;
+        public KeyCode ToggleKey = KeyCode.BackQuote;
+        public bool CloseOnEscape;
 
-        private ConsoleInputHistory inputHistory = new ConsoleInputHistory(inputHistoryCapacity);
+        private readonly ConsoleInputHistory _inputHistory = new ConsoleInputHistory(InputHistoryCapacity);
 
         public void ExecuteCommandDropResult( string input )
         {
@@ -36,42 +34,43 @@ namespace UnityConsole
 
             Console.Log(result.succeeded ? "Done" : "Failed");
 
-            if(!string.IsNullOrEmpty(result.output))
+            if(!string.IsNullOrEmpty(result.Output))
             {
-                Console.Log(result.output);
+                Console.Log(result.Output);
             }
 
-            inputHistory.AddNewInputEntry(input);
+            _inputHistory.AddNewInputEntry(input);
 
             return result;
         }
 
-        void Awake()
+        private void Awake()
         {
             /* This instantiation causes a bug when Unity rebuilds the project while in play mode
                Solution: move it to class level initialization, and make inputHistoryCapacity a const */
             // inputHistory = new ConsoleInputHistory(inputHistoryCapacity); 
         }
-        void OnEnable()
+
+        private void OnEnable()
         {
-            Console.OnConsoleLog += ui.AddNewOutputLine;
-            ui.onSubmitCommand += ExecuteCommandDropResult;
-            ui.onClearConsole += inputHistory.Clear;
+            Console.OnConsoleLog += UI.AddNewOutputLine;
+            UI.OnSubmitCommand += ExecuteCommandDropResult;
+            UI.OnClearConsole += _inputHistory.Clear;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
-            Console.OnConsoleLog -= ui.AddNewOutputLine;
-            ui.onSubmitCommand -= ExecuteCommandDropResult;
-            ui.onClearConsole -= inputHistory.Clear;
+            Console.OnConsoleLog -= UI.AddNewOutputLine;
+            UI.OnSubmitCommand -= ExecuteCommandDropResult;
+            UI.OnClearConsole -= _inputHistory.Clear;
         }
 
-        void Update()
+        private void Update()
         {
-            if (Input.GetKeyDown(toggleKey))
-                ui.ToggleConsole();
-            else if (Input.GetKeyDown(KeyCode.Escape) && closeOnEscape)
-                ui.CloseConsole();
+            if (Input.GetKeyDown(ToggleKey))
+                UI.ToggleConsole();
+            else if (Input.GetKeyDown(KeyCode.Escape) && CloseOnEscape)
+                UI.CloseConsole();
             else if (Input.GetKeyDown(KeyCode.UpArrow))
                 NavigateInputHistory(true);
             else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -80,8 +79,8 @@ namespace UnityConsole
 
         private void NavigateInputHistory(bool up)
         {
-            string navigatedToInput = inputHistory.Navigate(up);
-            ui.SetInputText(navigatedToInput);
+            string navigatedToInput = _inputHistory.Navigate(up);
+            UI.SetInputText(navigatedToInput);
         }
     }
 }

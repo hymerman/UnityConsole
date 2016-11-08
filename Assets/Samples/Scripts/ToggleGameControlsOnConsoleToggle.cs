@@ -6,28 +6,28 @@ using UnityConsole;
 /// </summary>
 public class ToggleGameControlsOnConsoleToggle : MonoBehaviour
 {
-    public ConsoleUI console;
-    public MouseLook mouseLook;
-    public WASDMovement wasdMovement;
+    public ConsoleUI Console;
+    public MouseLook MouseLook;
+    public WASDMovement WASDMovement;
 
-    void OnEnable()
+    private void OnEnable()
     {
-        console.onToggleConsole += ToggleMouseLook;
-        ToggleMouseLook(console.isConsoleOpen);
+        Console.OnToggleConsole += ToggleMouseLook;
+        ToggleMouseLook(Console.IsConsoleOpen);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        console.onToggleConsole -= ToggleMouseLook;
+        Console.OnToggleConsole -= ToggleMouseLook;
         ToggleMouseLook(false);
     }
 
     private void ToggleMouseLook(bool isConsoleOpen)
     {
-        if(mouseLook != null)
-            mouseLook.enabled = !isConsoleOpen;
+        if(MouseLook != null)
+            MouseLook.enabled = !isConsoleOpen;
 
-        if(wasdMovement != null)
-            wasdMovement.enabled = !isConsoleOpen;
+        if(WASDMovement != null)
+            WASDMovement.enabled = !isConsoleOpen;
     }
 }

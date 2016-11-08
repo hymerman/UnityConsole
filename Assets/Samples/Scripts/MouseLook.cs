@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// MouseLook rotates the transform based on the mouse delta.
 /// Minimum and Maximum values can be used to constrain the possible rotation
@@ -18,65 +17,65 @@ using System.Collections;
 public class MouseLook : MonoBehaviour
 {
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
-    public RotationAxes axes = RotationAxes.MouseXAndY;
-    public float sensitivityX = 15F;
-    public float sensitivityY = 15F;
+    public RotationAxes Axes = RotationAxes.MouseXAndY;
+    public float SensitivityX = 15F;
+    public float SensitivityY = 15F;
 
-    public float minimumX = -360F;
-    public float maximumX = 360F;
+    public float MinimumX = -360F;
+    public float MaximumX = 360F;
 
-    public float minimumY = -60F;
-    public float maximumY = 60F;
+    public float MinimumY = -60F;
+    public float MaximumY = 60F;
 
-    float rotationX = 0F;
-    float rotationY = 0F;
+    private float _rotationX;
+    private float _rotationY;
 
-    Quaternion originalRotation;
+    private Quaternion _originalRotation;
 
-    void Update()
+    private void Update()
     {
-        if (axes == RotationAxes.MouseXAndY)
+        if (Axes == RotationAxes.MouseXAndY)
         {
             // Read the mouse input axis
-            rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            _rotationX += Input.GetAxis("Mouse X") * SensitivityX;
+            _rotationY += Input.GetAxis("Mouse Y") * SensitivityY;
 
-            rotationX = ClampAngle(rotationX, minimumX, maximumX);
-            rotationY = ClampAngle(rotationY, minimumY, maximumY);
+            _rotationX = ClampAngle(_rotationX, MinimumX, MaximumX);
+            _rotationY = ClampAngle(_rotationY, MinimumY, MaximumY);
 
-            Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-            Quaternion yQuaternion = Quaternion.AngleAxis(rotationY, -Vector3.right);
+            Quaternion xQuaternion = Quaternion.AngleAxis(_rotationX, Vector3.up);
+            Quaternion yQuaternion = Quaternion.AngleAxis(_rotationY, -Vector3.right);
 
-            transform.localRotation = originalRotation * xQuaternion * yQuaternion;
+            transform.localRotation = _originalRotation * xQuaternion * yQuaternion;
         }
-        else if (axes == RotationAxes.MouseX)
+        else if (Axes == RotationAxes.MouseX)
         {
-            rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-            rotationX = ClampAngle(rotationX, minimumX, maximumX);
+            _rotationX += Input.GetAxis("Mouse X") * SensitivityX;
+            _rotationX = ClampAngle(_rotationX, MinimumX, MaximumX);
 
-            Quaternion xQuaternion = Quaternion.AngleAxis(rotationX, Vector3.up);
-            transform.localRotation = originalRotation * xQuaternion;
+            Quaternion xQuaternion = Quaternion.AngleAxis(_rotationX, Vector3.up);
+            transform.localRotation = _originalRotation * xQuaternion;
         }
         else
         {
-            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-            rotationY = ClampAngle(rotationY, minimumY, maximumY);
+            _rotationY += Input.GetAxis("Mouse Y") * SensitivityY;
+            _rotationY = ClampAngle(_rotationY, MinimumY, MaximumY);
 
-            Quaternion yQuaternion = Quaternion.AngleAxis(-rotationY, Vector3.right);
-            transform.localRotation = originalRotation * yQuaternion;
+            Quaternion yQuaternion = Quaternion.AngleAxis(-_rotationY, Vector3.right);
+            transform.localRotation = _originalRotation * yQuaternion;
         }
     }
 
-    void Start()
+    private void Start()
     {
         // Make the rigid body not change rotation
-        var rigidbody = GetComponent<Rigidbody>();
-        if (rigidbody != null)
-            rigidbody.freezeRotation = true;
-        originalRotation = transform.localRotation;
+        var rigidBody = GetComponent<Rigidbody>();
+        if (rigidBody != null)
+            rigidBody.freezeRotation = true;
+        _originalRotation = transform.localRotation;
     }
 
-    public static float ClampAngle(float angle, float min, float max)
+	private static float ClampAngle(float angle, float min, float max)
     {
         if (angle < -360F)
             angle += 360F;

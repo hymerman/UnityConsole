@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Text;
-using UnityConsole;
+﻿using System.Text;
 
 namespace UnityConsole.Commands
 { 
@@ -10,11 +7,11 @@ namespace UnityConsole.Commands
     /// </summary>
     public static class HelpCommand
     {
-        public static readonly string name = "HELP";
-        public static readonly string description = "Display the list of available commands or details about a specific command.";
-        public static readonly string usage = "HELP [command]";
+        public static readonly string Name = "HELP";
+        public static readonly string Description = "Display the list of available commands or details about a specific command.";
+        public static readonly string Usage = "HELP [command]";
 
-        private static StringBuilder commandList = new StringBuilder();
+        private static readonly StringBuilder CommandList = new StringBuilder();
 
         public static ConsoleCommandResult Execute(params string[] args)
         {
@@ -30,16 +27,16 @@ namespace UnityConsole.Commands
 
         private static ConsoleCommandResult DisplayAvailableCommands()
         {
-            commandList.Length = 0; // clear the command list before rebuilding it
-            commandList.Append("<b>Available Commands</b>\n");
+            CommandList.Length = 0; // clear the command list before rebuilding it
+            CommandList.Append("<b>Available Commands</b>\n");
 
-            foreach (ConsoleCommand command in ConsoleCommandsDatabase.commands)
+            foreach (ConsoleCommand command in ConsoleCommandsDatabase.Commands)
             {
-                commandList.Append(string.Format("    <b>{0}</b> - {1}\n", command.name, command.description));
+                CommandList.Append(string.Format("    <b>{0}</b> - {1}\n", command.Name, command.Description));
             }
 
-            commandList.Append("To display details about a specific command, type 'HELP' followed by the command name.");
-            return ConsoleCommandResult.Succeeded(commandList.ToString());
+            CommandList.Append("To display details about a specific command, type 'HELP' followed by the command name.");
+            return ConsoleCommandResult.Succeeded(CommandList.ToString());
         }
 
         private static ConsoleCommandResult DisplayCommandDetails(string commandName)
@@ -52,11 +49,11 @@ namespace UnityConsole.Commands
             try
             {
                 ConsoleCommand command = ConsoleCommandsDatabase.GetCommand(commandName);
-                return ConsoleCommandResult.Succeeded(string.Format(formatting, command.name, command.description, command.usage));
+                return ConsoleCommandResult.Succeeded(string.Format(formatting, command.Name, command.Description, command.Usage));
             }
             catch (NoSuchCommandException exception)
             {
-                return ConsoleCommandResult.Failed(string.Format("Cannot find help information about {0}. Are you sure it is a valid command?", exception.command));
+                return ConsoleCommandResult.Failed(string.Format("Cannot find help information about {0}. Are you sure it is a valid command?", exception.Command));
             }
         }
     }

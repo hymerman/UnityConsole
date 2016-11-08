@@ -7,9 +7,9 @@ namespace UnityConsole.Commands
     /// </summary>
     public static class QuitCommand
     {
-        public static readonly string name = "QUIT";
-        public static readonly string description = "Quit the application.";
-        public static readonly string usage = "QUIT";
+        public static readonly string Name = "QUIT";
+        public static readonly string Description = "Quit the application.";
+        public static readonly string Usage = "QUIT";
 
         public static ConsoleCommandResult Execute(params string[] args)
         {

@@ -9,12 +9,12 @@ namespace UnityConsole
     /// </summary>
     public static class ConsoleCommandsDatabase 
     {
-        private static Dictionary<string, ConsoleCommand> database = new Dictionary<string, ConsoleCommand>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<string, ConsoleCommand> Database = new Dictionary<string, ConsoleCommand>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Return all the commands in alphabetical order.
         /// </summary>
-        public static IEnumerable<ConsoleCommand> commands { get { return database.OrderBy(kv => kv.Key).Select(kv => kv.Value); } }
+        public static IEnumerable<ConsoleCommand> Commands { get { return Database.OrderBy(kv => kv.Key).Select(kv => kv.Value); } }
 
         public static void RegisterCommand(string command, ConsoleCommandCallback callback, string description = "", string usage = "") 
         {
@@ -23,12 +23,12 @@ namespace UnityConsole
 
         public static void RegisterCommand(string command, string description, string usage, ConsoleCommandCallback callback)
         {
-            database[command] = new ConsoleCommand(command, description, usage, callback);
+            Database[command] = new ConsoleCommand(command, description, usage, callback);
         }
 
         public static void UnRegisterCommand(string command)
         {
-            database.Remove(command);
+            Database.Remove(command);
         }
 
         public static ConsoleCommandResult ExecuteCommand(string command, params string[] args)
@@ -36,15 +36,15 @@ namespace UnityConsole
             try
             {
                 ConsoleCommand retrievedCommand = GetCommand(command);
-                return retrievedCommand.callback(args);
+                return retrievedCommand.Callback(args);
             }
             catch (NoSuchCommandException e)
             {
-                return new ConsoleCommandResult { succeeded = false, output = e.Message };
+                return new ConsoleCommandResult { succeeded = false, Output = e.Message };
             }
             catch (Exception e)
             {
-                return new ConsoleCommandResult { succeeded = false, output = e.Message };
+                return new ConsoleCommandResult { succeeded = false, Output = e.Message };
             }
         }
 
@@ -66,7 +66,7 @@ namespace UnityConsole
         {
             if (HasCommand(command))
             {
-                return database[command];
+                return Database[command];
             }
             else
             {
@@ -77,7 +77,7 @@ namespace UnityConsole
 
         public static bool HasCommand(string command)
         {
-            return database.ContainsKey(command);
+            return Database.ContainsKey(command);
         }
     }
 }

@@ -8,7 +8,7 @@ using UnityConsole.Commands;
 /// </summary>
 public class CustomCommands : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
         ConsoleCommandsDatabase.RegisterCommand("SPAWN", "Spawn a new game object from the given name and primitve type in front of the main camera. See PrimitiveType.", "SPAWN name primitiveType", Spawn);
         ConsoleCommandsDatabase.RegisterCommand("DESTROY", "Destroy the specified game object by name.", "DESTROY gameobject", Destroy);
@@ -19,18 +19,14 @@ public class CustomCommands : MonoBehaviour
     /// </summary>
     private static ConsoleCommandResult Spawn(params string[] args)
     {
-        string name;
-        PrimitiveType primitiveType;
-        GameObject spawned;
-        
-        if(args.Length < 2)
+	    if(args.Length < 2)
         {
             return HelpCommand.Execute("SPAWN");
         }
         else
         {
-            name = args[0];
-            try
+	        PrimitiveType primitiveType;
+	        try
             {
                 primitiveType = (PrimitiveType) Enum.Parse(typeof(PrimitiveType), args[1], true);
             }
@@ -39,7 +35,8 @@ public class CustomCommands : MonoBehaviour
                 return ConsoleCommandResult.Failed("Invalid primitive type specified: " + args[1]);
             }
 
-            spawned = GameObject.CreatePrimitive(primitiveType);
+            var name = args[0];
+            var spawned = GameObject.CreatePrimitive(primitiveType);
             spawned.name = name;
             spawned.transform.position = Camera.main.transform.position + Camera.main.transform.forward * 5;
             return ConsoleCommandResult.Succeeded("Spawned a new " + primitiveType + " named " + name + ".");

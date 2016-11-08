@@ -12,23 +12,23 @@ namespace UnityConsole
         /// <summary>
         /// The command that does not exist.
         /// </summary>
-        public string command { get; private set; }
+        public string Command { get; private set; }
 
-        public NoSuchCommandException() : base() { }
+        public NoSuchCommandException() { }
 
         public NoSuchCommandException(string message) : base(message) { }
 
         public NoSuchCommandException(string message, string command)
             : base(message)
         {
-            this.command = command;
+            Command = command;
         }
 
         protected NoSuchCommandException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             if (info != null)
-                this.command = info.GetString("command");
+                Command = info.GetString("command");
         }
 
         // Perform serialization
@@ -37,7 +37,7 @@ namespace UnityConsole
             base.GetObjectData(info, context);
 
             if (info != null)
-                info.AddValue("command", command);
+                info.AddValue("command", Command);
         }
     }
 }

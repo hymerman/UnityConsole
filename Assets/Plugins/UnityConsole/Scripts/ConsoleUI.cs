@@ -13,21 +13,21 @@ namespace UnityConsole
     [RequireComponent(typeof(ConsoleController))]
     public class ConsoleUI : MonoBehaviour, IScrollHandler
     {
-        public event Action<bool> onToggleConsole;
-        public event Action<string> onSubmitCommand;
-        public event Action onClearConsole;
+        public event Action<bool> OnToggleConsole;
+        public event Action<string> OnSubmitCommand;
+        public event Action OnClearConsole;
 
-        public Scrollbar scrollbar;
-        public Text outputText;
-        public ScrollRect outputArea;
-        public InputField inputField;
+        public Scrollbar Scrollbar;
+        public Text OutputText;
+        public ScrollRect OutputArea;
+        public InputField InputField;
 
         /// <summary>
         /// Indicates whether the console is currently open or close.
         /// </summary>
-        public bool isConsoleOpen { get { return enabled; } }
+        public bool IsConsoleOpen { get { return enabled; } }
 
-        void Awake()
+        private void Awake()
         {
             Show(false);
         }
@@ -58,12 +58,12 @@ namespace UnityConsole
             enabled = false;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             OnToggle(true);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             OnToggle(false);
         }
@@ -73,19 +73,19 @@ namespace UnityConsole
             Show(open);
 
             if (open)
-                inputField.ActivateInputField();
+                InputField.ActivateInputField();
             else
                 ClearInput();
 
-            if (onToggleConsole != null)
-                onToggleConsole(open);
+            if (OnToggleConsole != null)
+                OnToggleConsole(open);
         }
 
         private void Show(bool show)
         {
-            inputField.gameObject.SetActive(show);
-            outputArea.gameObject.SetActive(show);
-            scrollbar.gameObject.SetActive(show);
+            InputField.gameObject.SetActive(show);
+            OutputArea.gameObject.SetActive(show);
+            Scrollbar.gameObject.SetActive(show);
         }
 
         /// <summary>
@@ -98,13 +98,13 @@ namespace UnityConsole
 
             if (input.Length > 0)
             {
-                if (onSubmitCommand != null)
-                    onSubmitCommand(input);
-                scrollbar.value = 0;
+                if (OnSubmitCommand != null)
+                    OnSubmitCommand(input);
+                Scrollbar.value = 0;
                 ClearInput();
             }
 
-            inputField.ActivateInputField();
+            InputField.ActivateInputField();
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace UnityConsole
         /// </summary>
         public void OnScroll(PointerEventData eventData)
         {
-            scrollbar.value += 0.08f * eventData.scrollDelta.y;
+            Scrollbar.value += 0.08f * eventData.scrollDelta.y;
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace UnityConsole
         /// </summary>
         public void AddNewOutputLine(string line)
         {
-            outputText.text += Environment.NewLine + line;
+            OutputText.text += Environment.NewLine + line;
         }
 
         /// <summary>
@@ -128,10 +128,10 @@ namespace UnityConsole
         /// </summary>
         public void ClearOutput()
         {
-            outputText.text = "";
-            outputText.SetLayoutDirty();
-            if(onClearConsole != null)
-                onClearConsole();
+            OutputText.text = "";
+            OutputText.SetLayoutDirty();
+            if(OnClearConsole != null)
+                OnClearConsole();
         }
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace UnityConsole
         /// </summary>
         public void SetInputText(string input) 
         {
-            inputField.MoveTextStart(false);
-            inputField.text = input;
-            inputField.MoveTextEnd(false);
+            InputField.MoveTextStart(false);
+            InputField.text = input;
+            InputField.MoveTextEnd(false);
         }
     }
 }
