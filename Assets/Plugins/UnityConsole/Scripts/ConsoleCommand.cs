@@ -1,4 +1,4 @@
-﻿namespace Wenzil.Console 
+﻿namespace UnityConsole 
 {
     public struct ConsoleCommandResult
     {

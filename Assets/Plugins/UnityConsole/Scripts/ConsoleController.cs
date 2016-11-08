@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Wenzil.Console
+namespace UnityConsole
 {
     /// <summary>
     /// The behavior of the console.

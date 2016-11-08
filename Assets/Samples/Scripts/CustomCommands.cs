@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
-using Wenzil.Console;
-using Wenzil.Console.Commands;
+using UnityConsole;
+using UnityConsole.Commands;
 
 /// <summary>
 /// Two custom commands being registered with the console. Registered commands persist between scenes but don't persist between multiple application executions.

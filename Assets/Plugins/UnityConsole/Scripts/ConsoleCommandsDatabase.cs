@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Wenzil.Console
+namespace UnityConsole
 {
     /// <summary>
     /// Use RegisterCommand() to register your own commands. Registered commands persist between scenes but don't persist between multiple application executions.

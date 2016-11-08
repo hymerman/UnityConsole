@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Wenzil.Console.Commands;
+using UnityConsole.Commands;
 
-namespace Wenzil.Console
+namespace UnityConsole
 { 
     public class DefaultCommands : MonoBehaviour
     {

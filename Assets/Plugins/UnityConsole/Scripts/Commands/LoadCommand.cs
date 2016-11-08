@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 /// LOAD command. Load the specified scene by name.
 /// </summary>
 
-namespace Wenzil.Console.Commands
+namespace UnityConsole.Commands
 {
     public static class LoadSceneCommand
     {

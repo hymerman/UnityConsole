@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-namespace Wenzil.Console
+namespace UnityConsole
 {
 
     /// <summary>

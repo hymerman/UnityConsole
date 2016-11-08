@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Text;
-using Wenzil.Console;
+using UnityConsole;
 
-namespace Wenzil.Console.Commands
+namespace UnityConsole.Commands
 { 
     /// <summary>
     /// HELP command. Display the list of available commands or details about a specific command.
