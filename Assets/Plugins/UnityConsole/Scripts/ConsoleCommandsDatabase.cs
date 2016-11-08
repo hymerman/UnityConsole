@@ -26,6 +26,11 @@ namespace Wenzil.Console
             database[command] = new ConsoleCommand(command, description, usage, callback);
         }
 
+        public static void UnRegisterCommand(string command)
+        {
+            database.Remove(command);
+        }
+
         public static ConsoleCommandResult ExecuteCommand(string command, params string[] args)
         {
             try
